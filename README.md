@@ -63,3 +63,5 @@ This app is designed for GitHub Pages deployment. Simply push the files to your 
 ## License
 
 MIT License - feel free to use this as a template for your own error tracking documentation or educational materials.
+
+- Thanks
