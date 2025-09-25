@@ -14,13 +14,13 @@ body {
 
 /* Navigation */
 .navbar {
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #A960FF 0%, #8000FF 100%);
     color: white;
     padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 20px rgba(160, 96, 255, 0.3);
 }
 
 .nav-container {
@@ -65,7 +65,7 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #ECDDFF 0%, #A960FF 100%);
     padding: 4rem 0;
     text-align: center;
     margin: 2rem 0;
@@ -77,7 +77,7 @@ body {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #8000FF 0%, #FC00EF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -104,7 +104,7 @@ body {
     display: block;
     font-size: 2.5rem;
     font-weight: 700;
-    color: #22c55e;
+    color: #8000FF;
 }
 
 .stat-label {
@@ -136,17 +136,18 @@ body {
     background: white;
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(169, 96, 255, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(236, 221, 255, 0.5);
 }
 
 .insight-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 30px rgba(169, 96, 255, 0.25);
 }
 
 .insight-card h3 {
-    color: #22c55e;
+    color: #8000FF;
     margin-bottom: 1rem;
     font-size: 1.25rem;
 }
@@ -180,7 +181,7 @@ body {
     min-width: 200px;
     text-align: center;
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+    background: linear-gradient(135deg, #ECDDFF 0%, rgba(169, 96, 255, 0.1) 100%);
     border-radius: 15px;
     border: 2px solid #e1e8ff;
 }
@@ -188,7 +189,7 @@ body {
 .step-number {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #8000FF 0%, #FC00EF 100%);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -200,9 +201,10 @@ body {
 }
 
 .workflow-step h3 {
-    color: #333;
+    color: #34008D;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .workflow-step p {
@@ -212,7 +214,7 @@ body {
 
 .workflow-arrow {
     font-size: 2rem;
-    color: #22c55e;
+    color: #8000FF;
     font-weight: bold;
 }
 
@@ -250,14 +252,14 @@ body {
 }
 
 .tab-button.active {
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #8000FF 0%, #FC00EF 100%);
     color: white;
-    border-color: #22c55e;
+    border-color: #A960FF;
 }
 
 .tab-button:hover:not(.active) {
-    border-color: #22c55e;
-    color: #22c55e;
+    border-color: #A960FF;
+    color: #8000FF;
 }
 
 .platform-panel {
@@ -278,7 +280,7 @@ body {
     background: #f8f9ff;
     padding: 1.5rem;
     border-radius: 10px;
-    border-left: 4px solid #22c55e;
+    border-left: 4px solid #A960FF;
 }
 
 .error-type h4 {
@@ -300,7 +302,7 @@ body {
 }
 
 .error-type strong {
-    color: #22c55e;
+    color: #8000FF;
 }
 
 /* Tools Section */
@@ -325,8 +327,9 @@ body {
     background: white;
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(169, 96, 255, 0.15);
     transition: transform 0.3s ease;
+    border: 1px solid rgba(236, 221, 255, 0.5);
 }
 
 .tool-card:hover {
@@ -334,13 +337,14 @@ body {
 }
 
 .tool-card h3 {
-    color: #333;
+    color: #8000FF;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
 .tool-type {
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #8000FF 0%, #FC00EF 100%);
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
@@ -366,7 +370,7 @@ body {
     content: "✓";
     position: absolute;
     left: 0;
-    color: #22c55e;
+    color: #8000FF;
     font-weight: bold;
 }
 
@@ -426,7 +430,7 @@ body {
 }
 
 .trend-card {
-    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #8000FF 0%, #FC00EF 100%);
     color: white;
     padding: 2rem;
     border-radius: 15px;
@@ -464,7 +468,7 @@ body {
     background: #f8f9ff;
     padding: 2rem;
     border-radius: 15px;
-    border-left: 4px solid #22c55e;
+    border-left: 4px solid #A960FF;
     transition: transform 0.3s ease;
 }
 
