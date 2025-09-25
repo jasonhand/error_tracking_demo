@@ -6,6 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeChart();
     initializeSearch();
     initializeScrollEffects();
+
+    // Track page load completion
+    if (window.DD_RUM) {
+        window.DD_RUM.addAction('page_loaded', {
+            page: 'error_tracking_analysis',
+            timestamp: new Date().toISOString()
+        });
+    }
 });
 
 // Navigation functionality
@@ -17,8 +25,16 @@ function initializeNavigation() {
             e.preventDefault();
             const targetId = this.getAttribute('href').substring(1);
             const targetElement = document.getElementById(targetId);
-            
+
             if (targetElement) {
+                // Track navigation clicks
+                if (window.DD_RUM) {
+                    window.DD_RUM.addAction('navigation_click', {
+                        section: targetId,
+                        link_text: this.textContent
+                    });
+                }
+
                 targetElement.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -36,11 +52,19 @@ function initializeTabs() {
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             const platform = this.getAttribute('data-platform');
-            
+
+            // Track tab switches
+            if (window.DD_RUM) {
+                window.DD_RUM.addAction('tab_switch', {
+                    platform: platform,
+                    tab_text: this.textContent
+                });
+            }
+
             // Remove active class from all buttons and panels
             tabButtons.forEach(btn => btn.classList.remove('active'));
             platformPanels.forEach(panel => panel.classList.remove('active'));
-            
+
             // Add active class to clicked button and corresponding panel
             this.classList.add('active');
             document.getElementById(platform).classList.add('active');
@@ -52,7 +76,15 @@ function initializeTabs() {
 function initializeChart() {
     const ctx = document.getElementById('costChart');
     if (!ctx) return;
-    
+
+    // Track chart initialization
+    if (window.DD_RUM) {
+        window.DD_RUM.addAction('chart_initialized', {
+            chart_type: 'cost_analysis',
+            chart_id: 'costChart'
+        });
+    }
+
     new Chart(ctx, {
         type: 'bar',
         data: {
@@ -215,23 +247,40 @@ function initializeSearch() {
             searchResults.style.display = 'none';
             return;
         }
-        
-        const results = searchableContent.filter(item => 
+
+        // Track search queries
+        if (window.DD_RUM) {
+            window.DD_RUM.addAction('search_performed', {
+                query: query,
+                query_length: query.length
+            });
+        }
+
+        const results = searchableContent.filter(item =>
             item.title.toLowerCase().includes(query.toLowerCase()) ||
             item.content.toLowerCase().includes(query.toLowerCase())
         );
-        
+
+        // Track search results
+        if (window.DD_RUM) {
+            window.DD_RUM.addAction('search_results', {
+                query: query,
+                results_count: results.length,
+                found_results: results.length > 0
+            });
+        }
+
         if (results.length === 0) {
             searchResults.innerHTML = '<div class="search-result">No results found</div>';
         } else {
-            searchResults.innerHTML = results.map(result => 
+            searchResults.innerHTML = results.map(result =>
                 `<div class="search-result" onclick="scrollToSection('${result.section}')">
                     <strong>${result.title}</strong><br>
                     <small>${result.content}</small>
                 </div>`
             ).join('');
         }
-        
+
         searchResults.style.display = 'block';
     }
     
@@ -255,6 +304,14 @@ function initializeSearch() {
 function scrollToSection(sectionId) {
     const element = document.getElementById(sectionId);
     if (element) {
+        // Track search result clicks
+        if (window.DD_RUM) {
+            window.DD_RUM.addAction('search_result_click', {
+                section: sectionId,
+                source: 'search_results'
+            });
+        }
+
         element.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
@@ -344,6 +401,70 @@ window.addEventListener('load', function() {
     document.body.style.opacity = '1';
     document.body.style.transition = 'opacity 0.5s ease';
 });
+
+// Error tracking and monitoring
+window.addEventListener('error', function(event) {
+    if (window.DD_RUM) {
+        window.DD_RUM.addError(event.error, {
+            error_type: 'javascript_error',
+            filename: event.filename,
+            lineno: event.lineno,
+            colno: event.colno,
+            message: event.message
+        });
+    }
+});
+
+// Promise rejection tracking
+window.addEventListener('unhandledrejection', function(event) {
+    if (window.DD_RUM) {
+        window.DD_RUM.addError(event.reason, {
+            error_type: 'unhandled_promise_rejection',
+            promise_rejection: true
+        });
+    }
+});
+
+// Track performance issues
+function trackPerformanceIssues() {
+    if (window.DD_RUM && window.performance && window.performance.timing) {
+        const timing = window.performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+
+        if (loadTime > 3000) { // Flag slow loads over 3 seconds
+            window.DD_RUM.addAction('slow_page_load', {
+                load_time: loadTime,
+                performance_issue: true
+            });
+        }
+
+        // Track Chart.js load time if available
+        const chartContainer = document.getElementById('costChart');
+        if (chartContainer) {
+            const chartLoadStart = performance.now();
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' && chartContainer.querySelector('canvas')) {
+                        const chartLoadEnd = performance.now();
+                        const chartLoadTime = chartLoadEnd - chartLoadStart;
+
+                        if (window.DD_RUM) {
+                            window.DD_RUM.addAction('chart_render_complete', {
+                                render_time: chartLoadTime,
+                                chart_type: 'cost_analysis'
+                            });
+                        }
+                        observer.disconnect();
+                    }
+                });
+            });
+            observer.observe(chartContainer, { childList: true, subtree: true });
+        }
+    }
+}
+
+// Initialize performance tracking when page is fully loaded
+window.addEventListener('load', trackPerformanceIssues);
 
 // Add print styles
 const printStyles = `
