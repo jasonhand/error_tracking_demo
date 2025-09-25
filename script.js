@@ -61,14 +61,14 @@ function initializeChart() {
                 label: 'Relative Cost (1x = Design Phase)',
                 data: [1, 6, 15, 100],
                 backgroundColor: [
-                    'rgba(102, 126, 234, 0.8)',
-                    'rgba(118, 75, 162, 0.8)',
+                    'rgba(34, 197, 94, 0.8)',
+                    'rgba(22, 163, 74, 0.8)',
                     'rgba(255, 99, 132, 0.8)',
                     'rgba(255, 159, 64, 0.8)'
                 ],
                 borderColor: [
-                    'rgba(102, 126, 234, 1)',
-                    'rgba(118, 75, 162, 1)',
+                    'rgba(34, 197, 94, 1)',
+                    'rgba(22, 163, 74, 1)',
                     'rgba(255, 99, 132, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
@@ -162,7 +162,7 @@ function initializeSearch() {
         }
         #searchButton {
             padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
             border: none;
             color: white;
             cursor: pointer;
@@ -292,10 +292,10 @@ function initializeScrollEffects() {
     const navbar = document.querySelector('.navbar');
     window.addEventListener('scroll', function() {
         if (window.scrollY > 100) {
-            navbar.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            navbar.style.background = 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)';
             navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.2)';
         } else {
-            navbar.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            navbar.style.background = 'linear-gradient(135deg, #4ade80 0%, #22c55e 100%)';
             navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
         }
     });
