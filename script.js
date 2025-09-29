@@ -1,20 +1,135 @@
+// ==============================================
+// GDPR Cookie Consent Management
+// ==============================================
+
+// Analytics Initialization - Only runs if user accepts cookies
+function initializeAnalytics() {
+    console.log('✓ Analytics initialized - User accepted cookies');
+    
+    // Track page load completion
+    if (window.DD_RUM) {
+        window.DD_RUM.addAction('page_loaded', {
+            page: 'error_tracking_analysis',
+            timestamp: new Date().toISOString(),
+            consent_given: true
+        });
+    }
+    
+    // Initialize other analytics tools here (Google Analytics, etc.)
+    // Example: gtag('config', 'GA_MEASUREMENT_ID');
+}
+
+// Check for existing cookie consent on page load
+const cookieConsent = localStorage.getItem('cookieConsent');
+
+// If user previously accepted, initialize analytics immediately
+if (cookieConsent === 'accepted') {
+    initializeAnalytics();
+} else if (cookieConsent === 'declined') {
+    console.log('⚠ Analytics disabled - User declined cookies');
+}
+
+// Cookie Banner Management
+function showCookieBanner() {
+    const banner = document.getElementById('cookieConsentBanner');
+    if (banner) {
+        banner.style.display = 'block';
+        // Trigger animation after display is set
+        setTimeout(() => {
+            banner.classList.add('show');
+        }, 10);
+    }
+}
+
+function hideCookieBanner() {
+    const banner = document.getElementById('cookieConsentBanner');
+    if (banner) {
+        banner.classList.remove('show');
+        // Wait for animation to complete before hiding
+        setTimeout(() => {
+            banner.style.display = 'none';
+        }, 400);
+    }
+}
+
+function acceptCookies() {
+    localStorage.setItem('cookieConsent', 'accepted');
+    console.log('✓ Cookies accepted by user');
+    hideCookieBanner();
+    initializeAnalytics();
+    
+    // Track consent acceptance
+    if (window.DD_RUM) {
+        window.DD_RUM.addAction('cookie_consent_accepted', {
+            timestamp: new Date().toISOString(),
+            consent_method: 'banner_click'
+        });
+    }
+}
+
+function declineCookies() {
+    localStorage.setItem('cookieConsent', 'declined');
+    console.log('⚠ Cookies declined by user');
+    hideCookieBanner();
+    
+    // Optional: Track decline without using analytics
+    console.log('User declined cookies - No analytics tracking');
+}
+
+// Show banner if no consent has been given yet
+if (!cookieConsent) {
+    setTimeout(showCookieBanner, 500);
+}
+
+// ==============================================
+// Main Application Initialization
+// ==============================================
+
 // Smooth scrolling for navigation links
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize cookie banner event listeners
+    initializeCookieBanner();
+    
     // Initialize the application
     initializeNavigation();
     initializeTabs();
     initializeChart();
     initializeSearch();
     initializeScrollEffects();
+});
 
-    // Track page load completion
-    if (window.DD_RUM) {
-        window.DD_RUM.addAction('page_loaded', {
-            page: 'error_tracking_analysis',
-            timestamp: new Date().toISOString()
+// Initialize Cookie Banner Event Listeners
+function initializeCookieBanner() {
+    const acceptBtn = document.getElementById('acceptCookies');
+    const declineBtn = document.getElementById('declineCookies');
+    
+    if (acceptBtn) {
+        acceptBtn.addEventListener('click', acceptCookies);
+    }
+    
+    if (declineBtn) {
+        declineBtn.addEventListener('click', declineCookies);
+    }
+    
+    // Keyboard navigation support
+    const cookieBanner = document.getElementById('cookieConsentBanner');
+    if (cookieBanner) {
+        cookieBanner.addEventListener('keydown', function(e) {
+            // ESC key to decline
+            if (e.key === 'Escape') {
+                declineCookies();
+            }
+            // Enter on focused button
+            if (e.key === 'Enter') {
+                if (document.activeElement === acceptBtn) {
+                    acceptCookies();
+                } else if (document.activeElement === declineBtn) {
+                    declineCookies();
+                }
+            }
         });
     }
-});
+}
 
 // Navigation functionality
 function initializeNavigation() {
@@ -27,8 +142,8 @@ function initializeNavigation() {
             const targetElement = document.getElementById(targetId);
 
             if (targetElement) {
-                // Track navigation clicks
-                if (window.DD_RUM) {
+                // Track navigation clicks (only if consent given)
+                if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
                     window.DD_RUM.addAction('navigation_click', {
                         section: targetId,
                         link_text: this.textContent
@@ -53,8 +168,8 @@ function initializeTabs() {
         button.addEventListener('click', function() {
             const platform = this.getAttribute('data-platform');
 
-            // Track tab switches
-            if (window.DD_RUM) {
+            // Track tab switches (only if consent given)
+            if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
                 window.DD_RUM.addAction('tab_switch', {
                     platform: platform,
                     tab_text: this.textContent
@@ -77,8 +192,8 @@ function initializeChart() {
     const ctx = document.getElementById('costChart');
     if (!ctx) return;
 
-    // Track chart initialization
-    if (window.DD_RUM) {
+    // Track chart initialization (only if consent given)
+    if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
         window.DD_RUM.addAction('chart_initialized', {
             chart_type: 'cost_analysis',
             chart_id: 'costChart'
@@ -248,8 +363,8 @@ function initializeSearch() {
             return;
         }
 
-        // Track search queries
-        if (window.DD_RUM) {
+        // Track search queries (only if consent given)
+        if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
             window.DD_RUM.addAction('search_performed', {
                 query: query,
                 query_length: query.length
@@ -261,8 +376,8 @@ function initializeSearch() {
             item.content.toLowerCase().includes(query.toLowerCase())
         );
 
-        // Track search results
-        if (window.DD_RUM) {
+        // Track search results (only if consent given)
+        if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
             window.DD_RUM.addAction('search_results', {
                 query: query,
                 results_count: results.length,
@@ -304,8 +419,8 @@ function initializeSearch() {
 function scrollToSection(sectionId) {
     const element = document.getElementById(sectionId);
     if (element) {
-        // Track search result clicks
-        if (window.DD_RUM) {
+        // Track search result clicks (only if consent given)
+        if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
             window.DD_RUM.addAction('search_result_click', {
                 section: sectionId,
                 source: 'search_results'
@@ -402,9 +517,9 @@ window.addEventListener('load', function() {
     document.body.style.transition = 'opacity 0.5s ease';
 });
 
-// Error tracking and monitoring
+// Error tracking and monitoring (only if consent given)
 window.addEventListener('error', function(event) {
-    if (window.DD_RUM) {
+    if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
         window.DD_RUM.addError(event.error, {
             error_type: 'javascript_error',
             filename: event.filename,
@@ -415,9 +530,9 @@ window.addEventListener('error', function(event) {
     }
 });
 
-// Promise rejection tracking
+// Promise rejection tracking (only if consent given)
 window.addEventListener('unhandledrejection', function(event) {
-    if (window.DD_RUM) {
+    if (window.DD_RUM && localStorage.getItem('cookieConsent') === 'accepted') {
         window.DD_RUM.addError(event.reason, {
             error_type: 'unhandled_promise_rejection',
             promise_rejection: true
@@ -425,9 +540,9 @@ window.addEventListener('unhandledrejection', function(event) {
     }
 });
 
-// Track performance issues
+// Track performance issues (only if consent given)
 function trackPerformanceIssues() {
-    if (window.DD_RUM && window.performance && window.performance.timing) {
+    if (window.DD_RUM && window.performance && window.performance.timing && localStorage.getItem('cookieConsent') === 'accepted') {
         const timing = window.performance.timing;
         const loadTime = timing.loadEventEnd - timing.navigationStart;
 
